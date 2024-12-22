@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  password      String
+  invoices  Invoice[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Invoice {
+  id            String    @id @default(cuid())
+  invoiceNumber String    @default("")
+  date          DateTime  @default(now())
+  type          String    @default("standard")
+  totalAmount   Float     @default(0)
+  vatAmount     Float?
+  supplierId    String?
+  supplier      Supplier? @relation(fields: [supplierId], references: [id])
+  customerId    String?
+  customer      Customer? @relation(fields: [customerId], references: [id])
+  status        String    @default("pending")
+  fileName      String    @default("")
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  items         Item[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Supplier {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  email     String?
+  phone     String?
+  address   String?
+  trn       String?
+  invoices  Invoice[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Customer {
+  id        String    @id @default(uuid())
+  name      String
+  email     String?
+  phone     String?
+  address   String?
+  invoices  Invoice[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+
+model Item {
+  id          String   @id @default(cuid())
+  itemName    String
+  itemCode    String?
+  description String?
+  quantity    Int
+  unitPrice   Float
+  totalPrice  Float
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
