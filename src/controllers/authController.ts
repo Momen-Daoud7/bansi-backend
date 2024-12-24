@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthService } from '../services/authService';
 import { AppError } from '../middleware/errorHandler';
+import { inspect } from 'util';
 
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -10,7 +11,7 @@ export class AuthController {
       const { email, password, name } = req.body;
       
       if (!email || !password || !name) {
-        throw new AppError(400, 'Missing required fields');
+        throw new AppError(400, `Missing required fields ${inspect(req.body)}`);
       }
 
       const result = await this.authService.register(email, password, name);
