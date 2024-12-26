@@ -39,12 +39,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(cors({
-  origin: '*', // Allow all origins (for development)
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true,
-}));
+app.use(cors());
 
 app.use(createProxyMiddleware({
   target: 'http://147.93.27.52:3001', // Second backend URL
