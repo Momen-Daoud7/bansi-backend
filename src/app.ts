@@ -13,6 +13,7 @@ import path from 'path';
 // Add this line with other imports
 import authRoutes from './routes/authRoutes';
 import morgan from 'morgan';
+import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -44,6 +45,12 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
+
+app.use(createProxyMiddleware({
+  target: 'http://147.93.27.52:3001', // Second backend URL
+  changeOrigin: true,
+  secure: false,  // Disable SSL verification for development (useful for HTTP)
+}))
 
 app.use(express.json());
 app.use('/api/invoices', invoiceRoutes);
