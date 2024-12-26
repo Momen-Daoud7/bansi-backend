@@ -41,12 +41,6 @@ app.use((req, res, next) => {
 
 app.use(cors());
 
-app.use(createProxyMiddleware({
-  target: 'http://147.93.27.52:3001', // Second backend URL
-  changeOrigin: true,
-  secure: false,  // Disable SSL verification for development (useful for HTTP)
-}))
-
 app.use(express.json());
 app.use('/api/invoices', invoiceRoutes);
 app.use('/api/suppliers', supplierRoutes);
