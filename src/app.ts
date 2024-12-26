@@ -13,7 +13,6 @@ import path from 'path';
 // Add this line with other imports
 import authRoutes from './routes/authRoutes';
 import morgan from 'morgan';
-import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -40,7 +39,10 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: 'https://bansi-frontend.vercel.app',
+  origin: ['http://localhost:3001', 'https://bansi-frontend.vercel.app', 'http://bansi-frontend.vercel.app'], // Specify allowed origins
+  allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }));
 
 app.use(express.json());
