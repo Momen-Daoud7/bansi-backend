@@ -40,7 +40,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: '*',
+  origin: 'https://bansi-frontend.vercel.app',
 }));
 
 app.use(express.json());
